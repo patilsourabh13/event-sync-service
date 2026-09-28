@@ -1,8 +1,4 @@
-﻿> **Before running anything, see [`RESTORE-FIRST.txt`](RESTORE-FIRST.txt).**
-> Email filters block `.py`, `.js`, `.ps1` and `.sh` attachments, so 18 source
-> files were shipped with `.txt` appended to their names. One command renames
-> them back. File contents are unmodified.
-# Event Sync Service
+﻿# Event Sync Service
 
 Reconciles meeting records from a CRM feed and a calendar feed into one unified
 list — and keeps every disagreement between the two sources visible instead of
