@@ -1,0 +1,38 @@
+﻿=========================================================================
+ RESTORE THESE FILES BEFORE RUNNING  (takes 5 seconds)
+=========================================================================
+
+Email filters block .py, .js, .ps1 and .sh attachments, including inside a
+.zip file. So that this submission could be emailed, 18 source files have had
+".txt" appended to their filename. Nothing inside any file was changed.
+
+Run ONE of the commands below from this folder to rename them back.
+
+
+WINDOWS  (PowerShell, run from this folder)
+-------------------------------------------------------------------------
+Get-ChildItem -Recurse -File | Where-Object { $_.Name -match '\.(py|js|ps1|sh)\.txt$' } | Rename-Item -NewName { $_.Name -replace '\.txt$','' }
+
+
+MACOS / LINUX  (bash, run from this folder)
+-------------------------------------------------------------------------
+find . -type f \( -name '*.py.txt' -o -name '*.js.txt' -o -name '*.ps1.txt' -o -name '*.sh.txt' \) -exec sh -c 'mv "$1" "${1%.txt}"' _ {} \;
+chmod +x start.sh
+
+
+VERIFY  (should report 0 remaining)
+-------------------------------------------------------------------------
+Windows:       (Get-ChildItem -Recurse -File | Where-Object { $_.Name -match '\.(py|js|ps1|sh)\.txt$' }).Count
+macOS / Linux: find . -name '*.py.txt' -o -name '*.js.txt' -o -name '*.ps1.txt' -o -name '*.sh.txt' | wc -l
+
+
+THEN START THE APP
+-------------------------------------------------------------------------
+Windows:       .\start.ps1
+macOS / Linux: ./start.sh
+
+Full setup guide, approach and decisions are in README.md.
+
+Note: backend\requirements.txt is a genuine .txt file. The commands above
+only rename files ending in .py.txt / .js.txt / .ps1.txt / .sh.txt, so it is
+left alone.

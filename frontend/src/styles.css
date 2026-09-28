@@ -1,0 +1,196 @@
+/* Plain CSS, no framework. The brief says visual design is not evaluated, so
+   this aims for legibility and information density rather than polish. The one
+   place colour does real work is conflict severity, where it has to be
+   immediately scannable. */
+
+:root {
+  --bg: #f6f7f9;
+  --panel: #ffffff;
+  --border: #dfe3e8;
+  --text: #1c2024;
+  --muted: #6b7280;
+  --accent: #2563eb;
+
+  --crm: #7c3aed;
+  --calendar: #0891b2;
+
+  --critical: #b91c1c;
+  --critical-bg: #fef2f2;
+  --high: #c2410c;
+  --high-bg: #fff7ed;
+  --medium: #a16207;
+  --medium-bg: #fefce8;
+  --low: #4b5563;
+  --low-bg: #f3f4f6;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+code, .mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+}
+
+/* ---------- layout ---------- */
+.app { max-width: 1240px; margin: 0 auto; padding: 20px; }
+
+header.masthead { margin-bottom: 16px; }
+header.masthead h1 { margin: 0 0 4px; font-size: 20px; }
+header.masthead p { margin: 0; color: var(--muted); }
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+}
+
+.row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.spacer { flex: 1; }
+
+/* ---------- stats ---------- */
+.stats { display: flex; flex-wrap: wrap; gap: 10px; }
+.stat {
+  flex: 1 1 130px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+.stat .value { font-size: 22px; font-weight: 600; }
+.stat .label { color: var(--muted); font-size: 12px; }
+.stat .sub { color: var(--muted); font-size: 11px; margin-top: 2px; }
+
+/* ---------- tabs ---------- */
+.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
+.tabs button {
+  background: none; border: none; cursor: pointer;
+  padding: 9px 14px; font-size: 14px; color: var(--muted);
+  border-bottom: 2px solid transparent; margin-bottom: -1px;
+}
+.tabs button.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+.tabs .count {
+  background: var(--low-bg); border-radius: 9px; padding: 1px 6px;
+  font-size: 11px; margin-left: 6px;
+}
+
+/* ---------- controls ---------- */
+input[type="text"], select {
+  padding: 6px 9px; border: 1px solid var(--border);
+  border-radius: 6px; font-size: 13px; background: #fff; color: var(--text);
+}
+input[type="text"] { min-width: 230px; }
+label.field { display: flex; flex-direction: column; gap: 3px; font-size: 11px; color: var(--muted); }
+button.plain {
+  padding: 6px 11px; border: 1px solid var(--border); border-radius: 6px;
+  background: #fff; cursor: pointer; font-size: 13px;
+}
+button.plain:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ---------- badges ---------- */
+.badge {
+  display: inline-block; padding: 2px 7px; border-radius: 4px;
+  font-size: 11px; font-weight: 600; letter-spacing: .02em; white-space: nowrap;
+}
+.badge.both       { background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; }
+.badge.crm_only   { background: #f5f3ff; color: var(--crm); border: 1px solid #ddd6fe; }
+.badge.calendar_only { background: #ecfeff; color: var(--calendar); border: 1px solid #a5f3fc; }
+
+.badge.critical { background: var(--critical-bg); color: var(--critical); border: 1px solid #fecaca; }
+.badge.high     { background: var(--high-bg);     color: var(--high);     border: 1px solid #fed7aa; }
+.badge.medium   { background: var(--medium-bg);   color: var(--medium);   border: 1px solid #fde68a; }
+.badge.low      { background: var(--low-bg);      color: var(--low);      border: 1px solid #e5e7eb; }
+
+.badge.source-crm      { background: #f5f3ff; color: var(--crm); border: 1px solid #ddd6fe; }
+.badge.source-calendar { background: #ecfeff; color: var(--calendar); border: 1px solid #a5f3fc; }
+
+.tag {
+  display: inline-block; padding: 1px 6px; border-radius: 4px;
+  background: var(--low-bg); color: var(--muted); font-size: 11px;
+}
+
+/* ---------- meeting list ---------- */
+.meeting {
+  background: var(--panel); border: 1px solid var(--border);
+  border-radius: 8px; padding: 12px 14px; margin-bottom: 8px; cursor: pointer;
+}
+.meeting:hover { border-color: var(--accent); }
+.meeting.has-critical { border-left: 3px solid var(--critical); }
+.meeting.has-high     { border-left: 3px solid var(--high); }
+.meeting.cancelled .title { text-decoration: line-through; color: var(--muted); }
+.meeting .title { font-weight: 600; margin-right: 8px; }
+.meeting .meta { color: var(--muted); font-size: 12px; margin-top: 4px; }
+
+.empty { color: var(--muted); padding: 24px; text-align: center; }
+
+/* ---------- side-by-side diff ---------- */
+.diff { width: 100%; border-collapse: collapse; }
+.diff th, .diff td {
+  border: 1px solid var(--border); padding: 7px 9px;
+  vertical-align: top; text-align: left; font-size: 13px;
+}
+.diff th { background: #fafbfc; font-size: 11px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+.diff th.col-crm { color: var(--crm); }
+.diff th.col-calendar { color: var(--calendar); }
+.diff td.label { font-weight: 600; width: 140px; }
+.diff tr.conflict td { background: var(--high-bg); }
+.diff tr.conflict.critical td { background: var(--critical-bg); }
+.diff tr.conflict.low td { background: var(--low-bg); }
+.diff td.winner { font-weight: 600; }
+.diff td.loser { color: var(--muted); text-decoration: line-through; }
+.diff td.absent { color: #b6bcc4; font-style: italic; }
+.diff .why { display: block; margin-top: 4px; color: var(--muted); font-size: 11px; font-style: italic; }
+.wins { font-size: 10px; color: #047857; font-weight: 700; margin-left: 5px; }
+
+/* ---------- detail drawer ---------- */
+.overlay {
+  position: fixed; inset: 0; background: rgba(15, 23, 42, .35);
+  display: flex; justify-content: flex-end; z-index: 50;
+}
+.drawer {
+  background: var(--bg); width: min(880px, 100%); height: 100%;
+  overflow-y: auto; padding: 20px; box-shadow: -4px 0 18px rgba(0,0,0,.12);
+}
+.drawer h2 { margin: 0 0 4px; font-size: 18px; }
+.drawer h3 { font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin: 0 0 8px; }
+.drawer .close { float: right; }
+
+/* ---------- misc ---------- */
+.conflict-card { border-left: 3px solid var(--border); padding: 10px 12px; margin-bottom: 8px; background: var(--panel); border-radius: 0 6px 6px 0; border-top: 1px solid var(--border); border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.conflict-card.critical { border-left-color: var(--critical); }
+.conflict-card.high { border-left-color: var(--high); }
+.conflict-card.medium { border-left-color: var(--medium); }
+.conflict-card.low { border-left-color: var(--low); }
+.conflict-card .explain { color: var(--muted); font-size: 12px; margin-top: 5px; }
+
+.side-by-side { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
+.side { border: 1px solid var(--border); border-radius: 6px; padding: 7px 9px; background: #fafbfc; }
+.side .who { font-size: 10px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+.side.crm .who { color: var(--crm); }
+.side.calendar .who { color: var(--calendar); }
+.side .val { margin-top: 3px; word-break: break-word; }
+
+.signals { width: 100%; border-collapse: collapse; margin-top: 6px; }
+.signals td { padding: 3px 6px; border-bottom: 1px solid var(--border); font-size: 12px; }
+.signals td.num { text-align: right; width: 60px; font-variant-numeric: tabular-nums; }
+.signals td.na { color: var(--muted); font-style: italic; }
+
+pre.raw {
+  background: #0f172a; color: #e2e8f0; padding: 11px; border-radius: 6px;
+  overflow-x: auto; font-size: 11px; line-height: 1.45; max-height: 320px;
+}
+
+details summary { cursor: pointer; color: var(--accent); font-size: 13px; padding: 4px 0; }
+
+@media (max-width: 720px) {
+  .side-by-side { grid-template-columns: 1fr; }
+  .diff td.label { width: auto; }
+}
